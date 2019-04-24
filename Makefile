@@ -118,7 +118,7 @@ CC :=							clang
 # rules
 
 $(NAME): $(OBJ)
-	$(CC) -shared -fpic $(OBJ) -o $(NAME) $(LINK_FLAGS)
+	$(CC) -shared $(OBJ) -o $(NAME) $(LINK_FLAGS)
 
 $(TEST_BIN): $(TEST_OBJ)
 	$(CC) $(TEST_OBJ) $(LINK_FLAGS) -o $(TEST_BIN)
@@ -129,7 +129,7 @@ $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: %.c $(LIBFT) $(HEADERS)
-	$(CC) -c $< -o $@ $(CC_FLAGS) $(HEADER_FLAGS)
+	$(CC) -fpic -c $< -o $@ $(CC_FLAGS) $(HEADER_FLAGS)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
