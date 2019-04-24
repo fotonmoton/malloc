@@ -17,7 +17,7 @@ endif
 
 # name of the main target
 
-NAME :=							libft_malloc_$(HOSTTYPE)
+NAME :=							libft_malloc_$(HOSTTYPE).so
 
 
 # project directories
@@ -32,8 +32,12 @@ TST_DIR :=						$(ROOT)/t/
 
 # project headers
 
-TST_HEADER :=					$(INC_DIR)/t.h
-HEADERS :=						$(TST_HEADER)
+MLC_HEADER :=					$(INC_DIR)/ft_malloc.h
+TST_HEADER :=					$(INC_DIR)/tests.h
+TST_RUNNER_HEADER :=			$(INC_DIR)/t.h
+HEADERS :=						$(MLC_HEADER)								\
+								$(TST_HEADER)								\
+								$(TST_RUNNER_HEADER)
 
 
 # libraries
@@ -46,7 +50,9 @@ LIBFT =							$(LIBFT_DIR)libft.a
 
 # project source files
 
-SRC :=							malloc.c
+MALLOC_SRC =					malloc.c
+
+SRC :=							$(MALLOC_SRC)
 
 
 # project object files
@@ -58,7 +64,11 @@ OBJ =							$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
 TEST_BIN =						malloc_test
 
-TEST_SRC =						tests.c
+MALLOC_TESTS =					malloc_tests.c
+MALLOC_TESTS +=					$(MALLOC_SRC)
+
+TEST_SRC =						tests.c										\
+								$(MALLOC_TESTS)
 
 TEST_OBJ =						$(addprefix $(OBJ_DIR), $(TEST_SRC:.c=.o))
 
@@ -108,7 +118,7 @@ CC :=							clang
 # rules
 
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) $(LINK_FLAGS) -o $(NAME)
+	$(CC) -shared -fpic $(OBJ) -o $(NAME) $(LINK_FLAGS)
 
 $(TEST_BIN): $(TEST_OBJ)
 	$(CC) $(TEST_OBJ) $(LINK_FLAGS) -o $(TEST_BIN)
