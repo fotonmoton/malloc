@@ -7,7 +7,7 @@
 typedef struct 		s_header
 {
 	struct s_header	*next;
-	size_t			size;
+	size_t			units;
 } 					t_header;
 
 static t_header		base;
