@@ -24,7 +24,16 @@ void	*malloc(size_t size)
 	{
 		curr = prev->next;
 		if (curr->units >= nunits)
-			prev->next = curr->next;
+		{
+			if (curr->units == nunits)
+				prev->next = curr->next;
+			else
+			{
+				curr->units -= nunits;
+				curr += curr->units;
+				curr->units = nunits;
+			}
+		}
 		prev = curr;
 		curr = curr->next;
 	}
