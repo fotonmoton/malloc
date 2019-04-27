@@ -2,28 +2,28 @@
 
 void			free(void *used)
 {
-	t_header 	*runner;
+	t_header 	*pivot;
 	t_header	*to_be_freed;
 
 	to_be_freed = (t_header *)used - UINIT;
-	runner = free_blocks;
-	while(!(to_be_freed > runner && to_be_freed < runner->next))
+	pivot = free_blocks;
+	while(!(to_be_freed > pivot && to_be_freed < pivot->next))
 	{
-		if (runner >= runner->next && (to_be_freed > runner || to_be_freed < runner->next))
+		if (pivot >= pivot->next && (to_be_freed > pivot || to_be_freed < pivot->next))
 			break ;
-		runner = runner->next;
+		pivot = pivot->next;
 	}
-	if (to_be_freed + to_be_freed->units == runner->next)
+	if (to_be_freed + to_be_freed->units == pivot->next)
 	{
-		to_be_freed->units += runner->units;
-		to_be_freed->next = runner->next->next;
+		to_be_freed->units += pivot->units;
+		to_be_freed->next = pivot->next->next;
 	}
-	else if (runner + runner->units == to_be_freed)
+	else if (pivot + pivot->units == to_be_freed)
 	{
-		runner->units += to_be_freed->units;
-		runner->next = to_be_freed->next;
+		pivot->units += to_be_freed->units;
+		pivot->next = to_be_freed->next;
 	}
 	else
-		runner->next = to_be_freed;
-	free_blocks = runner;
+		pivot->next = to_be_freed;
+	free_blocks = pivot;
 }
