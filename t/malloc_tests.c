@@ -1,5 +1,4 @@
 #include "t.h"
-#include "tests.h"
 
 int	return_null_on_zero_size()
 {
@@ -7,7 +6,7 @@ int	return_null_on_zero_size()
 	_END("return null on zero size");
 }
 
-int malloc_tests(void)
+int	main(void)
 {
 	_SHOULD(return_null_on_zero_size);
 	return 0;
