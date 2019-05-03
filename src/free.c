@@ -2,5 +2,6 @@
 
 void			free(void *used)
 {
+	(void)used;
 	return ;
 }
