@@ -3,4 +3,5 @@
 *.so
 .vscode
 /bld
+/debug_bld
 /out

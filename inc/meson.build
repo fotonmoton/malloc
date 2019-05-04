@@ -1,1 +1,0 @@
-install_headers('ft_malloc.h')

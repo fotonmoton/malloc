@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static t_list	*merge(t_list *a, t_list *b, int (*cmp)())
+static t_list	*merge(t_list *a, t_list *b, int (*cmp)(void *, void *))
 {
 	t_list	*result;
 
@@ -63,7 +63,7 @@ static void		split(t_list *source, t_list **front_ptr, t_list **back_ptr)
 	}
 }
 
-void			ft_lst_merge_sort(t_list **head_ptr, int (*cmp)())
+void			ft_lst_merge_sort(t_list **head_ptr, int (*cmp)(void *, void *))
 {
 	t_list	*head;
 	t_list	*a;

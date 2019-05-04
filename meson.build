@@ -2,7 +2,7 @@ project(
 	'malloc',
 	'c',
 	default_options: [
-		'buildtype=release',
+		'buildtype=plain',
 	],
 )
 
@@ -10,7 +10,6 @@ add_global_arguments(
 	'-Wall',
 	'-Wextra',
 	'-Werror',
-	'-Wpointer-arith',
 	'-Wcast-align',
 	'-Wwrite-strings',
 	'-Wunreachable-code',
@@ -24,6 +23,25 @@ add_global_arguments(
 )
 
 inc = include_directories('inc')
-subdir('inc')
-subdir('src')
+
+install_headers('inc/ft_malloc.h')
+
+sources = [
+	'src/malloc.c',
+	'src/free.c',
+	'src/realloc.c',
+]
+
+libft = subproject('libft')
+
+libft_dep = libft.get_variable('libft_dep')
+
+ft_malloc = shared_library(
+	'ft_malloc',
+	sources,
+	include_directories: inc,
+	dependencies: libft_dep,
+	install: true,
+)
+
 subdir('t')
