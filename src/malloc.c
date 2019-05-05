@@ -5,20 +5,6 @@
 
 t_arena	g_base = { .type = START, .size = 0, .next = &g_base, .heap = NULL};
 
-static void		add_arena(t_arena *arena, size_t size, int arena_type)
-{
-	arena->size = size;
-	arena->type = arena_type;
-	arena->heap = (t_chunk *)(arena + 1);
-	arena->heap->is_free = 1;
-	arena->heap->magic = MAGIC;
-	arena->heap->size = HEAP_SIZE(size);
-	arena->heap->next = NULL;
-	arena->heap->prev = NULL;
-	arena->next = g_base.next;
-	g_base.next = arena;
-}
-
 static size_t	get_actual_size(size_t size, int type)
 {
 	size_t	minimum;
@@ -52,7 +38,16 @@ static t_arena	*get_more_arena(size_t size, int type)
 	flags = MAP_ANON | MAP_PRIVATE;
 	if ((arena = mmap(NULL, size, prot, flags, -1, 0)) == MAP_FAILED)
 		return (NULL);
-	add_arena(arena, size, type);
+	arena->size = size;
+	arena->type = type;
+	arena->heap = (t_chunk *)(arena + 1);
+	arena->heap->is_free = 1;
+	arena->heap->magic = MAGIC;
+	arena->heap->size = HEAP_SIZE(size);
+	arena->heap->next = NULL;
+	arena->heap->prev = NULL;
+	arena->next = g_base.next;
+	g_base.next = arena;
 	return (arena);
 }
 
@@ -72,16 +67,17 @@ static t_chunk	*chunk_heap(t_chunk *chunk, size_t size)
 	new_chunk->size = size;
 	new_chunk->next = chunk->next;
 	new_chunk->prev = chunk;
+	new_chunk->prev->next = new_chunk;
 	if (new_chunk->next)
 		new_chunk->next->prev = new_chunk;
-	return (chunk);
+	return (new_chunk);
 }
 
 void			*malloc(size_t size)
 {
-	void	*space;
 	t_arena	*arena;
-	t_chunk	*chunk;
+	t_chunk	*heap;
+	t_chunk	*space;
 	int		arena_type;
 
 	space = NULL;
@@ -90,12 +86,12 @@ void			*malloc(size_t size)
 	arena_type = get_arena_type(size);
 	while(!space)
 	{
-		if(arena->type == arena_type && (chunk = arena->heap))
-			while(!space && chunk)
+		if(arena->type == arena_type && (heap = arena->heap))
+			while(!space && heap)
 			{
-				if (chunk->size >= size && chunk->is_free)
-					space = chunk_heap(chunk, size);
-				chunk = chunk->next;
+				if (heap->size >= size && heap->is_free)
+					space = chunk_heap(heap, size);
+				heap = heap->next;
 			}
 		arena = arena->next;
 		if (!space && arena == &g_base)
