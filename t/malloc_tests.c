@@ -1,7 +1,7 @@
 #include "t.h"
 #include "ft_malloc.h"
 #include "ft_malloc_internal.h"
-
+#include <unistd.h>
 
 int	inital_base_next_point_to_itself(void)
 {
@@ -20,14 +20,14 @@ int	returns_not_null_pointer(void)
 	ptr = ptr - 1;
 	_IS(ptr->is_free == 0);
 	_IS(ptr->size ==  10 + sizeof(t_chunk));
-	_IS(ptr->magic == MAGIC);
+	// _IS(ptr->magic == MAGIC);
 	_IS(ptr->next == NULL);
 	_IS(ptr->prev != NULL);
 	_IS(ptr->prev->size > TINY * NALLOC && ptr->prev->size < SMALL * NALLOC);
 	_END("returns_not_null_pointer");
 }
 
-int	free_concatenates_andjustent_blocks(void)
+int	free_concatenates_adjacent_blocks(void)
 {
 	t_chunk	*ptr;
 	t_chunk	*next_malloc;
@@ -55,13 +55,43 @@ int	free_concatenates_andjustent_blocks(void)
 	_IS(heap->prev == NULL);
 	_IS(heap->next == NULL);
 
-	_END("free_concatenates_andjustent_blocks");
+	_END("free_concatenates_adjacent_blocks");
+}
+
+int	malloc_creates_new_arena(void)
+{
+	t_chunk	*second_arena_chunk;
+	int		chunks_count;
+	int		i;
+	int		page;
+	g_base.next = &g_base;
+	page = getpagesize();
+	// minimum 100 chunks aligned to page size
+	chunks_count = (ARENA_SIZE(CHUNK_SIZE(TINY) * NALLOC) + page - 1)
+		/ page * page / CHUNK_SIZE(TINY);
+	i = 0;
+	while (i < chunks_count)
+	{
+		malloc(TINY);
+		i++;
+	}
+
+	_IS(g_base.next->next == &g_base);
+	_IS(g_base.next->type == TINY);
+
+	second_arena_chunk = malloc(TINY);
+
+	_IS(g_base.next->next != &g_base);
+	_IS(g_base.next->type == TINY);
+	_IS(g_base.next->heap->next == second_arena_chunk - 1);
+	_END("malloc_creates_new_arena");
 }
 
 int	main(void)
 {
 	_SHOULD(inital_base_next_point_to_itself);
 	_SHOULD(returns_not_null_pointer);
-	_SHOULD(free_concatenates_andjustent_blocks);
+	_SHOULD(free_concatenates_adjacent_blocks);
+	_SHOULD(malloc_creates_new_arena);
 	return 0;
 }

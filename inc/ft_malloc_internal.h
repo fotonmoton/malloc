@@ -5,8 +5,8 @@
 # include <stdint.h>
 
 # define TINY 512
-# define SMALL 1024
-# define LARGE 1025
+# define SMALL 4096
+# define LARGE 4097
 # define START -1
 # define MAGIC 0xDEADBEEF
 # define NALLOC 100
@@ -31,6 +31,7 @@ typedef struct		s_arena
 }					t_arena;
 
 # define HEAP_SIZE(size) ((size) - sizeof(t_arena))
+# define ARENA_SIZE(size) ((size) + sizeof(t_arena))
 
 extern t_arena		g_base;
 

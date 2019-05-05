@@ -14,15 +14,15 @@ static size_t	get_actual_size(size_t size, int type)
 	if (type == LARGE)
 		minimum = size;
 	else
-		minimum = (type * NALLOC);
-	return ((minimum + sizeof(t_arena) + page - 1) / page * page);
+		minimum = ((CHUNK_SIZE(type)) * NALLOC);
+	return ((ARENA_SIZE(minimum) + page - 1) / page * page);
 }
 
 static int		get_arena_type(size_t size)
 {
-	if (size <= TINY)
+	if (size <= CHUNK_SIZE(TINY))
 		return (TINY);
-	if (size <= SMALL)
+	if (size <= CHUNK_SIZE(SMALL))
 		return (SMALL);
 	return (LARGE);
 }
