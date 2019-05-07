@@ -5,4 +5,14 @@ malloc_tests = executable(
 	link_with: ft_malloc,
 )
 
+
+malloc_fuzzy_tests = executable(
+	'malloc_fuzzy',
+	'fuzzy.c',
+	include_directories: inc,
+	link_with: ft_malloc,
+)
+
 test('malloc tests', malloc_tests)
+
+test('malloc fuzzy tests', malloc_fuzzy_tests, args: ['10', '1000', '0', '10000'])

@@ -86,7 +86,6 @@ libft = static_library(
 	'ft',
 	srcs,
 	include_directories: inc,
-	# install : true,
 )
 
 libft_dep = declare_dependency(

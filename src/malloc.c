@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gtertysh <gtertysh@student.unit.ua>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/06 22:35:57 by foton             #+#    #+#             */
+/*   Updated: 2019/05/07 22:06:49 by gtertysh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <sys/mman.h>
 #include "ft_malloc.h"
 #include "ft_malloc_internal.h"
@@ -55,13 +67,13 @@ static t_chunk	*chunk_heap(t_chunk *chunk, size_t size)
 {
 	t_chunk		*new_chunk;
 
-	if (chunk->size == size)
+	if (chunk->size == size || chunk->size - size < sizeof(t_chunk))
 	{
 		chunk->is_free = 0;
 		return (chunk);
 	}
 	chunk->size -= size;
-	new_chunk = (t_chunk *)((uint8_t *)chunk + chunk->size);
+	new_chunk = (t_chunk *)((size_t)chunk + chunk->size);
 	new_chunk->is_free = 0;
 	new_chunk->magic = MAGIC;
 	new_chunk->size = size;

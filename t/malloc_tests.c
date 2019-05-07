@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc_tests.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gtertysh <gtertysh@student.unit.ua>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/06 22:35:37 by foton             #+#    #+#             */
+/*   Updated: 2019/05/07 22:44:42 by gtertysh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <unistd.h>
 #include "t.h"
 #include "ft_malloc.h"
 #include "ft_malloc_internal.h"
-#include <unistd.h>
 
 int	inital_base_next_point_to_itself(void)
 {
@@ -20,7 +32,7 @@ int	returns_not_null_pointer(void)
 	ptr = ptr - 1;
 	_IS(ptr->is_free == 0);
 	_IS(ptr->size ==  10 + sizeof(t_chunk));
-	// _IS(ptr->magic == MAGIC);
+	_IS(ptr->magic == MAGIC);
 	_IS(ptr->next == NULL);
 	_IS(ptr->prev != NULL);
 	_IS(ptr->prev->size > TINY * NALLOC && ptr->prev->size < SMALL * NALLOC);
@@ -64,6 +76,7 @@ int	malloc_creates_new_arena(void)
 	int		chunks_count;
 	int		i;
 	int		page;
+
 	g_base.next = &g_base;
 	page = getpagesize();
 	// minimum 100 chunks aligned to page size
@@ -72,7 +85,7 @@ int	malloc_creates_new_arena(void)
 	i = 0;
 	while (i < chunks_count)
 	{
-		malloc(TINY);
+		second_arena_chunk = malloc(TINY);
 		i++;
 	}
 
@@ -87,11 +100,25 @@ int	malloc_creates_new_arena(void)
 	_END("malloc_creates_new_arena");
 }
 
+int	realloc_return_same_pointer(void)
+{
+	t_chunk *ptr;
+	t_chunk *new_ptr;
+
+	g_base.next = &g_base;
+	ptr = malloc(20);
+	new_ptr = realloc(ptr, 10);
+
+	_IS(ptr == new_ptr);
+	_END("realloc_return_same_pointer");
+}
+
 int	main(void)
 {
 	_SHOULD(inital_base_next_point_to_itself);
 	_SHOULD(returns_not_null_pointer);
 	_SHOULD(free_concatenates_adjacent_blocks);
 	_SHOULD(malloc_creates_new_arena);
+	_SHOULD(realloc_return_same_pointer);
 	return 0;
 }
