@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_malloc.h                                        :+:      :+:    :+:   */
+/*   get_arena_type.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gtertysh <gtertysh@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: gtertysh <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/06 22:37:16 by foton             #+#    #+#             */
-/*   Updated: 2019/05/06 22:40:14 by gtertysh         ###   ########.fr       */
+/*   Created: 2019/05/08 21:08:05 by gtertysh          #+#    #+#             */
+/*   Updated: 2019/05/08 21:08:06 by gtertysh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_MALLOC_H
-# define FT_MALLOC_H
+#include "ft_malloc_internal.h"
 
-# include <stddef.h>
-
-void				free(void *ptr);
-void				*malloc(size_t size);
-void				*calloc(size_t count, size_t size);
-void				*realloc(void *ptr, size_t size);
-void				show_alloc_mem(void);
-
-#endif
+int		get_arena_type(size_t size)
+{
+	if (size <= CHUNK_SIZE(TINY))
+		return (TINY);
+	if (size <= CHUNK_SIZE(SMALL))
+		return (SMALL);
+	return (LARGE);
+}

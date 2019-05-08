@@ -6,7 +6,7 @@
 /*   By: gtertysh <gtertysh@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 22:35:57 by foton             #+#    #+#             */
-/*   Updated: 2019/05/08 19:44:07 by gtertysh         ###   ########.fr       */
+/*   Updated: 2019/05/08 21:08:52 by gtertysh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "libft.h"
 
 t_arena	g_base = { .type = START, .size = 0, .next = &g_base, .heap = NULL};
+
+pthread_mutex_t	g_malloc_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static size_t	get_actual_size(size_t size, int type)
 {
@@ -28,15 +30,6 @@ static size_t	get_actual_size(size_t size, int type)
 	else
 		minimum = ((CHUNK_SIZE(type)) * NALLOC);
 	return ((ARENA_SIZE(minimum) + page - 1) / page * page);
-}
-
-static int		get_arena_type(size_t size)
-{
-	if (size <= CHUNK_SIZE(TINY))
-		return (TINY);
-	if (size <= CHUNK_SIZE(SMALL))
-		return (SMALL);
-	return (LARGE);
 }
 
 static t_arena	*get_more_arena(size_t size, int type)
@@ -85,7 +78,7 @@ static t_chunk	*chunk_heap(t_chunk *chunk, size_t size)
 	return (new_chunk);
 }
 
-void			*malloc(size_t size)
+void			*malloc_core(size_t size)
 {
 	t_arena	*arena;
 	t_chunk	*heap;
@@ -111,4 +104,14 @@ void			*malloc(size_t size)
 				return (NULL);
 	}
 	return (space + 1);
+}
+
+void			*malloc(size_t size)
+{
+	void	*ptr;
+
+	pthread_mutex_lock(&g_malloc_mutex);
+	ptr = malloc_core(size);
+	pthread_mutex_unlock(&g_malloc_mutex);
+	return (ptr);
 }

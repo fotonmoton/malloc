@@ -6,13 +6,25 @@ malloc_tests = executable(
 )
 
 
-malloc_fuzzy_tests = executable(
+malloc_fuzzy = executable(
 	'malloc_fuzzy',
 	'fuzzy.c',
 	include_directories: inc,
 	link_with: ft_malloc,
 )
 
-test('malloc tests', malloc_tests)
+zlib_dep = dependency('zlib')
 
-test('malloc fuzzy tests', malloc_fuzzy_tests, args: ['10', '1000', '0', '10000'])
+malloc_fuzzy_fast = executable(
+	'malloc_fuzzy_fast',
+	'fuzzy_fast.c',
+	include_directories: inc,
+	link_with: ft_malloc,
+	dependencies: zlib_dep
+)
+
+
+test('basic', malloc_tests)
+
+test('fuzzy', malloc_fuzzy, args: ['10', '1000', '0', '10000'])
+test('fuzzy_fast', malloc_fuzzy_fast, args: ['100', '1000', '0', '10000'])

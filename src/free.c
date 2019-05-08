@@ -6,14 +6,14 @@
 /*   By: gtertysh <gtertysh@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 22:35:53 by foton             #+#    #+#             */
-/*   Updated: 2019/05/06 22:40:09 by gtertysh         ###   ########.fr       */
+/*   Updated: 2019/05/08 21:08:00 by gtertysh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_malloc.h"
 #include "ft_malloc_internal.h"
 
-void			free(void *used)
+void		free_core(void *used)
 {
 	t_chunk *chunk;
 
@@ -38,4 +38,11 @@ void			free(void *used)
 		if (chunk->next)
 			chunk->next->prev = chunk;
 	}
+}
+
+void		free(void *used)
+{
+	pthread_mutex_lock(&g_malloc_mutex);
+	free_core(used);
+	pthread_mutex_unlock(&g_malloc_mutex);
 }

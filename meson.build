@@ -7,6 +7,7 @@ project(
 )
 
 add_global_arguments(
+	'-O0',
 	'-Wall',
 	'-Wextra',
 	'-Werror',
@@ -30,6 +31,7 @@ sources = [
 	'src/malloc.c',
 	'src/free.c',
 	'src/realloc.c',
+	'src/get_arena_type.c'
 ]
 
 libft = subproject('libft')
