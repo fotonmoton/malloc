@@ -6,7 +6,7 @@
 /*   By: gtertysh <gtertysh@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 22:35:57 by foton             #+#    #+#             */
-/*   Updated: 2019/05/07 22:06:49 by gtertysh         ###   ########.fr       */
+/*   Updated: 2019/05/08 19:44:07 by gtertysh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,10 @@ void			*malloc(size_t size)
 	size = CHUNK_SIZE(size);
 	arena = g_base.next;
 	arena_type = get_arena_type(size);
-	while(!space)
+	while (!space)
 	{
-		if(arena->type == arena_type && (heap = arena->heap))
-			while(!space && heap)
+		if (arena->type == arena_type && (heap = arena->heap))
+			while (!space && heap)
 			{
 				if (heap->size >= size && heap->is_free)
 					space = chunk_heap(heap, size);

@@ -6,7 +6,7 @@
 /*   By: gtertysh <gtertysh@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 22:35:37 by foton             #+#    #+#             */
-/*   Updated: 2019/05/07 22:44:42 by gtertysh         ###   ########.fr       */
+/*   Updated: 2019/05/08 19:47:45 by gtertysh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ int	returns_not_null_pointer(void)
 	g_base.next = &g_base;
 	ptr = malloc(10);
 	_IS(ptr != NULL);
-
 	ptr = ptr - 1;
 	_IS(ptr->is_free == 0);
-	_IS(ptr->size ==  10 + sizeof(t_chunk));
+	_IS(ptr->size == 10 + sizeof(t_chunk));
 	_IS(ptr->magic == MAGIC);
 	_IS(ptr->next == NULL);
 	_IS(ptr->prev != NULL);
@@ -48,25 +47,19 @@ int	free_concatenates_adjacent_blocks(void)
 	g_base.next = &g_base;
 	ptr = malloc(10);
 	next_malloc = malloc(10);
-
 	ptr -= 1;
 	next_malloc -= 1;
-
 	free(ptr + 1);
-
 	_IS(ptr->is_free == 1);
 	_IS(ptr->prev == next_malloc);
 	_IS(next_malloc->is_free == 0);
 	_IS(next_malloc->next == ptr);
 	_IS(next_malloc->prev->prev == NULL);
-
 	heap = next_malloc->prev;
 	free(next_malloc + 1);
-
 	_IS(heap->is_free == 1);
 	_IS(heap->prev == NULL);
 	_IS(heap->next == NULL);
-
 	_END("free_concatenates_adjacent_blocks");
 }
 
@@ -88,12 +81,9 @@ int	malloc_creates_new_arena(void)
 		second_arena_chunk = malloc(TINY);
 		i++;
 	}
-
 	_IS(g_base.next->next == &g_base);
 	_IS(g_base.next->type == TINY);
-
 	second_arena_chunk = malloc(TINY);
-
 	_IS(g_base.next->next != &g_base);
 	_IS(g_base.next->type == TINY);
 	_IS(g_base.next->heap->next == second_arena_chunk - 1);
@@ -108,7 +98,6 @@ int	realloc_return_same_pointer(void)
 	g_base.next = &g_base;
 	ptr = malloc(20);
 	new_ptr = realloc(ptr, 10);
-
 	_IS(ptr == new_ptr);
 	_END("realloc_return_same_pointer");
 }
@@ -120,5 +109,5 @@ int	main(void)
 	_SHOULD(free_concatenates_adjacent_blocks);
 	_SHOULD(malloc_creates_new_arena);
 	_SHOULD(realloc_return_same_pointer);
-	return 0;
+	return (0);
 }
