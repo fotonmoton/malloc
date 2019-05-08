@@ -31,7 +31,9 @@ sources = [
 	'src/malloc.c',
 	'src/free.c',
 	'src/realloc.c',
-	'src/get_arena_type.c'
+	'src/calloc.c',
+	'src/get_arena_type.c',
+	'src/show_alloc_mem.c',
 ]
 
 libft = subproject('libft')

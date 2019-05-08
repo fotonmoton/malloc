@@ -35,6 +35,7 @@ int	returns_not_null_pointer(void)
 	_IS(ptr->next == NULL);
 	_IS(ptr->prev != NULL);
 	_IS(ptr->prev->size > TINY * NALLOC && ptr->prev->size < SMALL * NALLOC);
+	// show_alloc_mem();
 	_END("returns_not_null_pointer");
 }
 
@@ -87,6 +88,7 @@ int	malloc_creates_new_arena(void)
 	_IS(g_base.next->next != &g_base);
 	_IS(g_base.next->type == TINY);
 	_IS(g_base.next->heap->next == second_arena_chunk - 1);
+	// show_alloc_mem();
 	_END("malloc_creates_new_arena");
 }
 
