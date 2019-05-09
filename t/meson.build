@@ -27,4 +27,4 @@ malloc_fuzzy_fast = executable(
 test('basic', malloc_tests)
 
 test('fuzzy', malloc_fuzzy, args: ['10', '1000', '0', '10000'])
-test('fuzzy_fast', malloc_fuzzy_fast, args: ['100', '1000', '0', '10000'])
+test('fuzzy_fast', malloc_fuzzy_fast, args: ['10', '1000', '0', '10000'])

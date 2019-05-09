@@ -10,6 +10,7 @@
 #include <errno.h>
 
 #include <zlib.h>
+#include "ft_malloc.h"
 
 struct item {
     void *ptr;
@@ -105,7 +106,7 @@ int main(int argc, const char *const argv[]) {
             }
         }
 
-		/* show_alloc_mem(); */
+		show_alloc_mem();
     }
 
     close(dev_urandom_fd);

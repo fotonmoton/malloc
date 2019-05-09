@@ -6,7 +6,7 @@
 /*   By: gtertysh <gtertysh@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 22:35:37 by foton             #+#    #+#             */
-/*   Updated: 2019/05/08 19:47:45 by gtertysh         ###   ########.fr       */
+/*   Updated: 2019/05/09 23:49:52 by gtertysh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,10 @@ int	realloc_return_same_pointer(void)
 	t_chunk *new_ptr;
 
 	g_base.next = &g_base;
-	ptr = malloc(20);
-	new_ptr = realloc(ptr, 10);
+	ptr = malloc(20000);
+	new_ptr = realloc(ptr, 100);
 	_IS(ptr == new_ptr);
+	// show_alloc_mem();
 	_END("realloc_return_same_pointer");
 }
 
