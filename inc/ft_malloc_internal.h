@@ -6,7 +6,7 @@
 /*   By: gtertysh <gtertysh@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 22:37:07 by foton             #+#    #+#             */
-/*   Updated: 2019/05/08 19:45:18 by gtertysh         ###   ########.fr       */
+/*   Updated: 2019/05/10 20:03:15 by gtertysh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <stddef.h>
 # include <stdint.h>
 # include <pthread.h>
-
 
 # define TINY 512
 # define SMALL 4096
